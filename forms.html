@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELT - Corporate Forms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #00abce 0%, #73a535 100%);
+            min-height: 100vh; color: #333;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        /* PAGE HEADER */
+        .page-header {
+            text-align: center; color: white; margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 2.2em; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 6px;
+        }
+        .page-header p {
+            font-family: 'Frank Ruhl Libre', serif; color: rgba(255,255,255,0.9);
+            font-size: 1.05em;
+        }
+        .back-link {
+            display: inline-block; color: white; text-decoration: none; font-weight: 600;
+            font-size: 0.9em; margin-bottom: 16px; opacity: 0.85;
+        }
+        .back-link:hover { opacity: 1; text-decoration: underline; }
+
+        /* SEARCH */
+        .search-bar {
+            width: 100%; padding: 12px 18px; border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px; font-size: 1em; font-family: 'Montserrat', sans-serif;
+            background: rgba(255,255,255,0.95); margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .search-bar:focus { outline: none; border-color: #00abce; }
+
+        /* ACCORDION */
+        .form-accordion {
+            background: rgba(255,255,255,0.97); border-radius: 16px;
+            margin-bottom: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+        .form-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 24px; cursor: pointer; transition: background 0.2s;
+        }
+        .form-header:hover { background: rgba(0,171,206,0.04); }
+        .form-header-left { display: flex; align-items: center; gap: 16px; }
+        .form-code {
+            background: linear-gradient(135deg, #00abce, #73a535);
+            color: white; font-weight: 700; font-size: 0.85em;
+            padding: 8px 14px; border-radius: 10px; min-width: 65px; text-align: center;
+        }
+        .form-name-block h2 { font-size: 1.15em; color: #925333; font-weight: 600; }
+        .form-header-right { display: flex; align-items: center; gap: 14px; }
+        .form-stat-pill {
+            background: #e8f5e9; color: #73a535; font-weight: 600; font-size: 0.8em;
+            padding: 5px 14px; border-radius: 20px;
+        }
+        .chevron {
+            width: 22px; height: 22px; color: #925333; transition: transform 0.3s;
+        }
+        .form-accordion.open .chevron { transform: rotate(180deg); }
+
+        /* BODY */
+        .form-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+        }
+        .form-accordion.open .form-body { max-height: 8000px; }
+        .form-body-inner { padding: 0 24px 24px; }
+
+        .form-desc {
+            font-family: 'Frank Ruhl Libre', serif; color: #555; line-height: 1.6;
+            font-size: 0.95em; margin-bottom: 20px; padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* STATS */
+        .form-stats-row {
+            display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .fstat {
+            flex: 1; min-width: 100px; text-align: center; background: #f8f9fa;
+            border-radius: 12px; padding: 14px 10px;
+        }
+        .fnum { font-size: 1.6em; font-weight: 700; color: #00abce; }
+        .flabel { font-size: 0.72em; color: #888; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        /* TIMELINE */
+        .form-timeline-heading {
+            font-size: 1.1em; font-weight: 600; color: #925333; margin-bottom: 16px;
+        }
+        .form-timeline { display: flex; flex-direction: column; gap: 10px; }
+
+        .form-tl-year {
+            background: #f8fdf5; border-radius: 12px; padding: 16px 20px;
+            border-left: 4px solid #73a535;
+        }
+        .form-tl-year.inactive {
+            background: #fafafa; border-left-color: #ddd;
+        }
+        .form-tl-year:nth-child(even):not(.inactive) { border-left-color: #00abce; }
+
+        .form-tl-year-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+        }
+        .form-tl-year-num { font-size: 1.25em; font-weight: 700; color: #925333; }
+        .year-count {
+            background: #73a535; color: white; font-size: 0.75em; font-weight: 600;
+            padding: 3px 10px; border-radius: 12px;
+        }
+        .form-tl-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .state-pill {
+            background: white; color: #73a535; border: 2px solid #73a535;
+            padding: 5px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 500;
+            text-decoration: none; display: inline-block; transition: all 0.2s;
+            cursor: pointer;
+        }
+        .state-pill:hover {
+            background: #73a535; color: white; transform: translateY(-1px);
+        }
+        .form-tl-no-activity {
+            color: #999; font-style: italic; font-size: 0.88em;
+        }
+
+        /* FOOTER */
+        .page-footnote {
+            text-align: center; color: rgba(255,255,255,0.7); font-size: 0.78em;
+            margin-top: 24px; font-style: italic; padding: 10px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .form-header { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
+            .form-name-block h2 { font-size: 1em; }
+            .form-body-inner { padding: 0 16px 16px; }
+            .form-stats-row { gap: 8px; }
+            .fstat { min-width: 70px; padding: 10px 6px; }
+            .fnum { font-size: 1.3em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Map</a>
+        <div class="page-header">
+            <h1>Social Enterprise Corporate Forms</h1>
+            <p>Five corporate forms designed for businesses pursuing both profit and positive social or environmental impact</p>
+        </div>
+
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search forms or states...">
+
+        <div class="form-accordion open" id="BCORP" data-form="Benefit Corporation BCORP">
+            <div class="form-header" onclick="toggleAccordion('BCORP')">
+                <div class="form-header-left">
+                    <div class="form-code">Benefit Corp</div>
+                    <div class="form-name-block"><h2>Benefit Corporation</h2></div>
+                </div>
+                <div class="form-header-right">
+                    <span class="form-stat-pill">39 states</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-body-inner">
+                    <p class="form-desc">The most widely adopted social enterprise form, benefit corporations are required to pursue general public benefit alongside profit. Directors must consider stakeholder interests beyond shareholders in decision-making. The benefit corporation represents a fundamental shift in corporate governance, allowing companies to embed social and environmental considerations into their legal DNA.</p>
+                    <div class="form-stats-row">
+                        <div class="fstat"><div class="fnum">39</div><div class="flabel">Total States</div></div>
+                        <div class="fstat"><div class="fnum">2009</div><div class="flabel">First Enacted</div></div>
+                        <div class="fstat"><div class="fnum">2021</div><div class="flabel">Latest</div></div>
+                        <div class="fstat"><div class="fnum">78%</div><div class="flabel">Coverage</div></div>
+                    </div>
+                    <div class="form-timeline-heading">Enactment Timeline</div>
+                    <div class="form-timeline">
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2009</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#VT" class="state-pill">Vermont</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2010</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#MD" class="state-pill">Maryland</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2011</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new benefit corporation legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2012</span>
+                                <span class="year-count">4 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#CA" class="state-pill">California</a>
+                                <a href="states.html#LA" class="state-pill">Louisiana</a>
+                                <a href="states.html#PA" class="state-pill">Pennsylvania</a>
+                                <a href="states.html#SC" class="state-pill">South Carolina</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2013</span>
+                                <span class="year-count">9 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#AR" class="state-pill">Arkansas</a>
+                                <a href="states.html#CT" class="state-pill">Connecticut</a>
+                                <a href="states.html#DE" class="state-pill">Delaware</a>
+                                <a href="states.html#IL" class="state-pill">Illinois</a>
+                                <a href="states.html#MA" class="state-pill">Massachusetts</a>
+                                <a href="states.html#NJ" class="state-pill">New Jersey</a>
+                                <a href="states.html#NY" class="state-pill">New York</a>
+                                <a href="states.html#RI" class="state-pill">Rhode Island</a>
+                                <a href="states.html#VA" class="state-pill">Virginia</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2014</span>
+                                <span class="year-count">8 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#AZ" class="state-pill">Arizona</a>
+                                <a href="states.html#FL" class="state-pill">Florida</a>
+                                <a href="states.html#NE" class="state-pill">Nebraska</a>
+                                <a href="states.html#NH" class="state-pill">New Hampshire</a>
+                                <a href="states.html#NV" class="state-pill">Nevada</a>
+                                <a href="states.html#OR" class="state-pill">Oregon</a>
+                                <a href="states.html#UT" class="state-pill">Utah</a>
+                                <a href="states.html#WV" class="state-pill">West Virginia</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2015</span>
+                                <span class="year-count">5 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#ID" class="state-pill">Idaho</a>
+                                <a href="states.html#IN" class="state-pill">Indiana</a>
+                                <a href="states.html#MN" class="state-pill">Minnesota</a>
+                                <a href="states.html#MT" class="state-pill">Montana</a>
+                                <a href="states.html#TN" class="state-pill">Tennessee</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2016</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new benefit corporation legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2017</span>
+                                <span class="year-count">4 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#KS" class="state-pill">Kansas</a>
+                                <a href="states.html#KY" class="state-pill">Kentucky</a>
+                                <a href="states.html#TX" class="state-pill">Texas</a>
+                                <a href="states.html#WI" class="state-pill">Wisconsin</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2018</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new benefit corporation legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2019</span>
+                                <span class="year-count">2 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#ME" class="state-pill">Maine</a>
+                                <a href="states.html#OK" class="state-pill">Oklahoma</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2020</span>
+                                <span class="year-count">4 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#AL" class="state-pill">Alabama</a>
+                                <a href="states.html#GA" class="state-pill">Georgia</a>
+                                <a href="states.html#NM" class="state-pill">New Mexico</a>
+                                <a href="states.html#OH" class="state-pill">Ohio</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2021</span>
+                                <span class="year-count">40 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#IA" class="state-pill">Iowa</a>
+                                <a href="states.html#AL" class="state-pill">Alabama</a>
+                                <a href="states.html#AZ" class="state-pill">Arizona</a>
+                                <a href="states.html#AR" class="state-pill">Arkansas</a>
+                                <a href="states.html#CA" class="state-pill">California</a>
+                                <a href="states.html#CT" class="state-pill">Connecticut</a>
+                                <a href="states.html#DE" class="state-pill">Delaware</a>
+                                <a href="states.html#FL" class="state-pill">Florida</a>
+                                <a href="states.html#GA" class="state-pill">Georgia</a>
+                                <a href="states.html#ID" class="state-pill">Idaho</a>
+                                <a href="states.html#IL" class="state-pill">Illinois</a>
+                                <a href="states.html#IN" class="state-pill">Indiana</a>
+                                <a href="states.html#IA" class="state-pill">Iowa</a>
+                                <a href="states.html#KS" class="state-pill">Kansas</a>
+                                <a href="states.html#KY" class="state-pill">Kentucky</a>
+                                <a href="states.html#LA" class="state-pill">Louisiana</a>
+                                <a href="states.html#ME" class="state-pill">Maine</a>
+                                <a href="states.html#MD" class="state-pill">Maryland</a>
+                                <a href="states.html#MA" class="state-pill">Massachusetts</a>
+                                <a href="states.html#MN" class="state-pill">Minnesota</a>
+                                <a href="states.html#MT" class="state-pill">Montana</a>
+                                <a href="states.html#NE" class="state-pill">Nebraska</a>
+                                <a href="states.html#NV" class="state-pill">Nevada</a>
+                                <a href="states.html#NH" class="state-pill">New Hampshire</a>
+                                <a href="states.html#NJ" class="state-pill">New Jersey</a>
+                                <a href="states.html#NM" class="state-pill">New Mexico</a>
+                                <a href="states.html#NY" class="state-pill">New York</a>
+                                <a href="states.html#OH" class="state-pill">Ohio</a>
+                                <a href="states.html#OK" class="state-pill">Oklahoma</a>
+                                <a href="states.html#OR" class="state-pill">Oregon</a>
+                                <a href="states.html#PA" class="state-pill">Pennsylvania</a>
+                                <a href="states.html#RI" class="state-pill">Rhode Island</a>
+                                <a href="states.html#SC" class="state-pill">South Carolina</a>
+                                <a href="states.html#TN" class="state-pill">Tennessee</a>
+                                <a href="states.html#TX" class="state-pill">Texas</a>
+                                <a href="states.html#UT" class="state-pill">Utah</a>
+                                <a href="states.html#VT" class="state-pill">Vermont</a>
+                                <a href="states.html#VA" class="state-pill">Virginia</a>
+                                <a href="states.html#WV" class="state-pill">West Virginia</a>
+                                <a href="states.html#WI" class="state-pill">Wisconsin</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-accordion" id="SPC" data-form="Social Purpose Corporation SPC">
+            <div class="form-header" onclick="toggleAccordion('SPC')">
+                <div class="form-header-left">
+                    <div class="form-code">SPC</div>
+                    <div class="form-name-block"><h2>Social Purpose Corporation</h2></div>
+                </div>
+                <div class="form-header-right">
+                    <span class="form-stat-pill">4 states</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-body-inner">
+                    <p class="form-desc">The Social Purpose Corporation allows corporations to define specific social or environmental purposes in addition to profit maximization. This form provides flexibility in how companies balance financial and social objectives, offering an alternative to the broader public benefit requirement of benefit corporations. SPCs allow directors to consider specific social purposes in their decision-making while maintaining traditional corporate governance structures.</p>
+                    <div class="form-stats-row">
+                        <div class="fstat"><div class="fnum">4</div><div class="flabel">Total States</div></div>
+                        <div class="fstat"><div class="fnum">2011</div><div class="flabel">First Enacted</div></div>
+                        <div class="fstat"><div class="fnum">2014</div><div class="flabel">Latest</div></div>
+                        <div class="fstat"><div class="fnum">8%</div><div class="flabel">Coverage</div></div>
+                    </div>
+                    <div class="form-timeline-heading">Enactment Timeline</div>
+                    <div class="form-timeline">
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2011</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#CA" class="state-pill">California</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2012</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new SPC legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2013</span>
+                                <span class="year-count">2 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#WA" class="state-pill">Washington</a>
+                                <a href="states.html#TX" class="state-pill">Texas</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2014</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#FL" class="state-pill">Florida</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-accordion" id="L3C" data-form="Low-Profit Limited Liability Company L3C">
+            <div class="form-header" onclick="toggleAccordion('L3C')">
+                <div class="form-header-left">
+                    <div class="form-code">L3C</div>
+                    <div class="form-name-block"><h2>Low-Profit Limited Liability Company</h2></div>
+                </div>
+                <div class="form-header-right">
+                    <span class="form-stat-pill">8 states</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-body-inner">
+                    <p class="form-desc">Designed primarily for charitable purposes with limited profit distribution, the L3C was originally created to facilitate program-related investments (PRIs) by foundations. This hybrid structure bridges the gap between nonprofit and for-profit entities, allowing for social enterprises that can accept both philanthropic and market-rate investment. Despite early enthusiasm, adoption has been limited and some states have rescinded their L3C legislation.</p>
+                    <div class="form-stats-row">
+                        <div class="fstat"><div class="fnum">8</div><div class="flabel">Total States</div></div>
+                        <div class="fstat"><div class="fnum">2008</div><div class="flabel">First Enacted</div></div>
+                        <div class="fstat"><div class="fnum">2013</div><div class="flabel">Latest</div></div>
+                        <div class="fstat"><div class="fnum">16%</div><div class="flabel">Coverage</div></div>
+                    </div>
+                    <div class="form-timeline-heading">Enactment Timeline</div>
+                    <div class="form-timeline">
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2008</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#VT" class="state-pill">Vermont</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2009</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#UT" class="state-pill">Utah</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2010</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#IL" class="state-pill">Illinois</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2011</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new L3C legislation enacted this year (though several states considered and rejected it)</div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2012</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new L3C legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2013</span>
+                                <span class="year-count">5 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#LA" class="state-pill">Louisiana</a>
+                                <a href="states.html#ME" class="state-pill">Maine</a>
+                                <a href="states.html#MI" class="state-pill">Michigan</a>
+                                <a href="states.html#RI" class="state-pill">Rhode Island</a>
+                                <a href="states.html#WY" class="state-pill">Wyoming</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-accordion" id="BLLC" data-form="Benefit Limited Liability Company BLLC">
+            <div class="form-header" onclick="toggleAccordion('BLLC')">
+                <div class="form-header-left">
+                    <div class="form-code">BLLC</div>
+                    <div class="form-name-block"><h2>Benefit Limited Liability Company</h2></div>
+                </div>
+                <div class="form-header-right">
+                    <span class="form-stat-pill">5 states</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-body-inner">
+                    <p class="form-desc">The Benefit Limited Liability Company combines the flexibility of LLC structure with benefit corporation principles. This innovative form merges the pass-through taxation and operational flexibility of an LLC with the social benefit requirements of a benefit corporation. BLLCs must pursue general public benefit while providing the governance advantages of the LLC structure, making them particularly attractive for smaller social enterprises and impact-focused startups.</p>
+                    <div class="form-stats-row">
+                        <div class="fstat"><div class="fnum">5</div><div class="flabel">Total States</div></div>
+                        <div class="fstat"><div class="fnum">2013</div><div class="flabel">First Enacted</div></div>
+                        <div class="fstat"><div class="fnum">2018</div><div class="flabel">Latest</div></div>
+                        <div class="fstat"><div class="fnum">10%</div><div class="flabel">Coverage</div></div>
+                    </div>
+                    <div class="form-timeline-heading">Enactment Timeline</div>
+                    <div class="form-timeline">
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2013</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#MD" class="state-pill">Maryland</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2014</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#OR" class="state-pill">Oregon</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2015</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new BLLC legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2016</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#PA" class="state-pill">Pennsylvania</a>
+                            </div>
+                        </div>
+                        <div class="form-tl-year inactive">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2017</span>
+                            </div>
+                            <div class="form-tl-no-activity">No new BLLC legislation enacted this year</div>
+                        </div>
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2018</span>
+                                <span class="year-count">2 states</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#UT" class="state-pill">Utah</a>
+                                <a href="states.html#DE" class="state-pill">Delaware</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-accordion" id="SPBLP" data-form="Statutory Public Benefit Limited Partnership SPBLP">
+            <div class="form-header" onclick="toggleAccordion('SPBLP')">
+                <div class="form-header-left">
+                    <div class="form-code">SPBLP</div>
+                    <div class="form-name-block"><h2>Statutory Public Benefit Limited Partnership</h2></div>
+                </div>
+                <div class="form-header-right">
+                    <span class="form-stat-pill">1 state</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="form-body">
+                <div class="form-body-inner">
+                    <p class="form-desc">The Social Purpose Benefit Limited Partnership is the newest and most specialized social enterprise form, currently available only in Delaware. Designed specifically for sophisticated impact investing arrangements, the SPBLP provides a limited partnership structure that can pursue both profit and public benefit purposes. This form is particularly suited for investment funds and complex financial structures that need the flexibility of partnership taxation while maintaining a formal commitment to social or environmental impact.</p>
+                    <div class="form-stats-row">
+                        <div class="fstat"><div class="fnum">1</div><div class="flabel">Total States</div></div>
+                        <div class="fstat"><div class="fnum">2018</div><div class="flabel">First Enacted</div></div>
+                        <div class="fstat"><div class="fnum">—</div><div class="flabel">Latest</div></div>
+                        <div class="fstat"><div class="fnum">2%</div><div class="flabel">Coverage</div></div>
+                    </div>
+                    <div class="form-timeline-heading">Enactment Timeline</div>
+                    <div class="form-timeline">
+                        <div class="form-tl-year">
+                            <div class="form-tl-year-header">
+                                <span class="form-tl-year-num">2018</span>
+                                <span class="year-count">1 state</span>
+                            </div>
+                            <div class="form-tl-pills">
+                                <a href="states.html#DE" class="state-pill">Delaware</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-footnote">
+            Years shown reflect when legislation was enacted or signed by the governor, not the effective date.<br>
+            <a href="states.html" style="color:white;">Browse All States →</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const wasOpen = el.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.form-accordion').forEach(a => a.classList.remove('open'));
+            // Toggle
+            if (!wasOpen) {
+                el.classList.add('open');
+                setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            }
+        }
+
+        // Search
+        document.getElementById('searchBar').addEventListener('input', e => {
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll('.form-accordion').forEach(acc => {
+                const text = acc.getAttribute('data-form').toLowerCase() + ' ' + acc.textContent.toLowerCase();
+                acc.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // Hash navigation
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                document.querySelectorAll('.form-accordion').forEach(a => a.classList.remove('open'));
+                const target = document.getElementById(hash);
+                target.classList.add('open');
+                setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+            }
+        });
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                document.querySelectorAll('.form-accordion').forEach(a => a.classList.remove('open'));
+                const target = document.getElementById(hash);
+                target.classList.add('open');
+                setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+            }
+        });
+    </script>
+</body>
+</html>
