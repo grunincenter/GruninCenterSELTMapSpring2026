@@ -6,14 +6,6 @@
     <title>SELT - Social Enterprise Legislative Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* Target the logo container or image */
-.logo-container img, 
-#grunin-logo {
-    width: auto;           /* Keeps original aspect ratio */
-    max-width: 250px;      /* Set your desired "normal" size for desktop */
-    height: auto;
-    display: block;
-}
 
 /* Mobile Adjustments (Screens smaller than 768px) */
 @media (max-width: 768px) {
@@ -38,10 +30,24 @@
             display: flex; align-items: center; justify-content: flex-start;
             gap: 20px; margin-bottom: 25px; width: 100%;
         }
-        .grunin-logo-img {
-            width: 180px; height: auto; border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); background: white; padding: 16px;
-        }
+.grunin-logo-img {
+    width: 100%;            /* Allows it to be responsive */
+    max-width: 280px;       /* Set this to your preferred "normal" size */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: white;
+    padding: 8px;           /* Reduced padding so the logo looks larger */
+    display: block;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+    .grunin-logo-img {
+        max-width: 180px;   /* Slightly smaller on phones */
+        margin: 0 auto;     /* Centers it when the header stacks */
+    }
+}
         .grunin-title { text-align: left; flex: 1; }
         .grunin-name { font-size: 1.6em; font-weight: 600; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .grunin-subtitle { font-size: 1.15em; color: rgba(255,255,255,0.9); font-family: 'Frank Ruhl Libre', serif; }
