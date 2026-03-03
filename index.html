@@ -30,22 +30,22 @@
             display: flex; align-items: center; justify-content: flex-start;
             gap: 20px; margin-bottom: 25px; width: 100%;
         }
-.grunin-logo-img {
-    width: 100%;            /* Allows it to be responsive */
-    max-width: 280px;       /* Set this to your preferred "normal" size */
+width: 220px !important; 
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    
+    /* Aesthetics */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     background: white;
-    padding: 8px;           /* Reduced padding so the logo looks larger */
+    padding: 12px;
     display: block;
 }
 
-/* Mobile Fix */
+/* Mobile: Scale down slightly so it doesn't crowd the text */
 @media (max-width: 768px) {
     .grunin-logo-img {
-        max-width: 180px;   /* Slightly smaller on phones */
-        margin: 0 auto;     /* Centers it when the header stacks */
+        width: 160px !important;
+        margin: 0 auto 15px auto; /* Centers and adds space below */
     }
 }
         .grunin-title { text-align: left; flex: 1; }
