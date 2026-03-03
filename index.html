@@ -6,61 +6,49 @@
     <title>SELT - Social Enterprise Legislative Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500&display=swap" rel="stylesheet">
     <style>
-
-/* This controls the logo size and prevents "craziness" */
-.grunin-logo-img {
-    display: block;
-    width: 200px;           /* Standard width for desktop */
-    max-width: 100%;       /* Prevents it from ever being wider than the screen */
-    height: auto !important; /* Forces the height to scale with the width */
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* Ensure the branding area is visible */
+.grunin-branding {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-bottom: 25px;
+    width: 100%;
 }
 
-/* Mobile: Scaled down for smaller screens */
+/* Fixed Logo Size - No more "Crazy" stretching */
+.grunin-logo-img {
+    width: 200px !important; /* Forces a normal size */
+    height: auto !important;
+    display: block;
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* The Text next to the logo */
+.grunin-name {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: white !important; /* Ensures text is visible */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Mobile Fix: Stacks logo on top of text */
 @media (max-width: 768px) {
-    .grunin-logo-img {
-        width: 150px;       /* Smaller on mobile */
-        margin: 0 auto 15px auto; /* Centers it and adds space below */
-    }
     .grunin-branding {
         flex-direction: column;
         text-align: center;
     }
-}
-
-        /* BRANDING */
-        .header { text-align: center; margin-bottom: 16px; color: white; }
-        .grunin-branding {
-            display: flex; align-items: center; justify-content: flex-start;
-            gap: 20px; margin-bottom: 25px; width: 100%;
-        }
-width: 220px !important; 
-    height: auto;
-    
-    /* Aesthetics */
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    background: white;
-    padding: 12px;
-    display: block;
-}
-
-/* Mobile: Scale down slightly so it doesn't crowd the text */
-@media (max-width: 768px) {
     .grunin-logo-img {
-        width: 160px !important;
-        margin: 0 auto 15px auto; /* Centers and adds space below */
+        width: 150px !important;
+        margin: 0 auto;
+    }
+    .grunin-name {
+        font-size: 1.3em;
     }
 }
-        .grunin-title { text-align: left; flex: 1; }
-        .grunin-name { font-size: 1.6em; font-weight: 600; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .grunin-subtitle { font-size: 1.15em; color: rgba(255,255,255,0.9); font-family: 'Frank Ruhl Libre', serif; }
-        .header h1 { font-size: 2.2em; margin-bottom: 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: 700; }
-        .header-desc { color: rgba(255,255,255,0.85); font-family: 'Frank Ruhl Libre', serif; font-size: 1.05em; }
-
         /* CONTROLS (inside map section) */
         .map-controls-overlay {
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
