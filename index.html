@@ -6,6 +6,23 @@
     <title>SELT - Social Enterprise Legislative Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* Target the logo container or image */
+.logo-container img, 
+#grunin-logo {
+    width: auto;           /* Keeps original aspect ratio */
+    max-width: 250px;      /* Set your desired "normal" size for desktop */
+    height: auto;
+    display: block;
+}
+
+/* Mobile Adjustments (Screens smaller than 768px) */
+@media (max-width: 768px) {
+    .logo-container img, 
+    #grunin-logo {
+        max-width: 150px;  /* Scales down for mobile phones */
+        margin: 0 auto;    /* Centers it if needed */
+    }
+}
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
